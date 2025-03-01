@@ -1,6 +1,6 @@
 {
   "name": "soffice",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "commonjs",
   "description": "wrapper of the LibreOffice CLI - convert between office files, pdf, and html files",
   "keywords": [
