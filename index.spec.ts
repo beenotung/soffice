@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { convertTo, convertToPDF, Format, is_soffice_installed } from './index'
-import { existsSync, unlinkSync, writeFileSync } from 'fs'
+import { existsSync, renameSync, unlinkSync, writeFileSync } from 'fs'
 
 describe('check if soffice is installed', () => {
   it('should return true if LibreOffice is installed', () => {
@@ -8,7 +8,7 @@ describe('check if soffice is installed', () => {
   })
 })
 
-describe('pdf conversion', () => {
+describe('format conversion', () => {
   before(async () => {
     let res = await fetch('https://www.example.com')
     let text = await res.text()
@@ -107,6 +107,25 @@ describe('pdf conversion', () => {
     test('ods', 'html')
     test('xlsx', 'html')
     test('xls', 'html')
+  })
+
+  it('should throw error if not supported', async () => {
+    // backup the file
+    renameSync('res/test.ods', 'res/test.ods.bak')
+    let error: Error | null = null
+    try {
+      await convertTo({
+        input_file: 'res/test.html',
+        convert_to: 'ods',
+      })
+    } catch (err) {
+      error = err as Error
+    }
+    renameSync('res/test.ods.bak', 'res/test.ods')
+    expect(error).to.be.instanceOf(Error)
+    expect(error!.message).to.equal(
+      'Not supported to convert from .html to .ods',
+    )
   })
 })
 

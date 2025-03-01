@@ -1,4 +1,5 @@
 import { execSync, spawn } from 'child_process'
+import { access } from 'fs/promises'
 import { dirname, extname } from 'path'
 
 export function is_soffice_installed() {
@@ -45,17 +46,15 @@ export function convertTo(options: {
   input_file: string
   convert_to: Format
 }): Promise<string> {
-  const { dir, output_file } = extractFileDetails(
-    options.input_file,
-    options.convert_to,
-  )
+  let { input_file, convert_to } = options
+  const { dir, output_file } = extractFileDetails(input_file, convert_to)
   return new Promise((resolve, reject) => {
     let child = spawn('soffice', [
       '--headless',
       '--writer',
       '--convert-to',
-      options.convert_to,
-      options.input_file,
+      convert_to,
+      input_file,
       '--outdir',
       dir,
     ])
@@ -68,17 +67,27 @@ export function convertTo(options: {
     child.stderr.on('data', data => {
       stderr += data.toString()
     })
-    child.on('exit', code => {
-      if (code === 0) resolve(output_file)
-      else
-        reject(
-          new ChildProcessError(
-            `Failed to convert file "${options.input_file}" into ${options.convert_to}`,
+    child.on('exit', async code => {
+      try {
+        if (code !== 0) {
+          throw new ChildProcessError(
+            `Failed to convert file "${input_file}" into ${convert_to}`,
             code,
             stdout,
             stderr,
-          ),
-        )
+          )
+        }
+        try {
+          await access(output_file)
+          resolve(output_file)
+        } catch (error) {
+          let from = extname(input_file)
+          let to = extname(output_file)
+          throw new Error(`Not supported to convert from ${from} to ${to}`)
+        }
+      } catch (error) {
+        reject(error)
+      }
     })
   })
 }

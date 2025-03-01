@@ -10,6 +10,8 @@ wrapper of the LibreOffice CLI - convert between office files, pdf, and html fil
   - word documents (odt, doc, docx)
   - spreadsheets (ods, xls, xlsx)
   - presentation slides (odp, ppt, pptx)
+- Throw error if the conversion is not supported
+  - Instead of continuing silently (which is the default behavior of soffice)
 - Typescript support
 
 ## Installation
