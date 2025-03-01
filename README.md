@@ -1,6 +1,6 @@
 # soffice
 
-wrapper of the LibreOffice CLI - convert html and office files to pdf
+wrapper of the LibreOffice CLI - convert between office files (word documents, spreadsheets, presentation slides), pdf, and html files
 
 [![npm Package Version](https://img.shields.io/npm/v/soffice)](https://www.npmjs.com/package/soffice)
 
@@ -34,16 +34,31 @@ Core Functions:
 ```typescript
 export function convertToPDF(input_file: string): Promise<string>
 
-export function is_soffice_installed(): boolean
+export function convertToHTML(input_file: string): Promise<string>
+
+export function convertTo(options: {
+  input_file: string
+  convert_to: Format
+}): Promise<string>
+
+export type Format =
+  | 'pdf'
+  | 'html'
+  | 'doc'
+  | 'docx'
+  | 'odt'
+  | 'odp'
+  | 'pptx'
+  | 'ppt'
+  | 'ods'
+  | 'xlsx'
+  | 'xls'
 ```
 
 Helper Functions:
 
 ```typescript
-export function convertTo(options: {
-  input_file: string
-  convert_to: string
-}): Promise<string>
+export function is_soffice_installed(): boolean
 ```
 
 Error Class:

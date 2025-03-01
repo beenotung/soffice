@@ -90,6 +90,13 @@ export function convertToPDF(input_file: string) {
   })
 }
 
+export function convertToHTML(input_file: string) {
+  return convertTo({
+    input_file,
+    convert_to: 'html',
+  })
+}
+
 export class ChildProcessError extends Error {
   constructor(
     message: string,
