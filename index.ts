@@ -20,6 +20,19 @@ function extractFileDetails(input_file: string, convert_to: string) {
   return { output_file, dir }
 }
 
+export type Format =
+  | 'pdf'
+  | 'html'
+  | 'doc'
+  | 'docx'
+  | 'odt'
+  | 'odp'
+  | 'pptx'
+  | 'ppt'
+  | 'ods'
+  | 'xlsx'
+  | 'xls'
+
 /**
  * Convert a file to a different format using LibreOffice cli `soffice`.
  *
@@ -30,7 +43,7 @@ function extractFileDetails(input_file: string, convert_to: string) {
  */
 export function convertTo(options: {
   input_file: string
-  convert_to: string
+  convert_to: Format
 }): Promise<string> {
   const { dir, output_file } = extractFileDetails(
     options.input_file,
