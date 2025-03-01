@@ -1,12 +1,15 @@
 # soffice
 
-wrapper of the LibreOffice CLI - convert between office files (word documents, spreadsheets, presentation slides), pdf, and html files
+wrapper of the LibreOffice CLI - convert between office files, pdf, and html files
 
 [![npm Package Version](https://img.shields.io/npm/v/soffice)](https://www.npmjs.com/package/soffice)
 
 ## Features
 
-- Convert html and office files to pdf
+- Convert between office files, pdf, and html
+  - word documents (odt, doc, docx)
+  - spreadsheets (ods, xls, xlsx)
+  - presentation slides (odp, ppt, pptx)
 - Typescript support
 
 ## Installation
