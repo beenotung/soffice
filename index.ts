@@ -20,7 +20,18 @@ function extractFileDetails(input_file: string, convert_to: string) {
   return { output_file, dir }
 }
 
-export function convertTo(options: { input_file: string; convert_to: string }) {
+/**
+ * Convert a file to a different format using LibreOffice cli `soffice`.
+ *
+ * @param options.input_file - The path to the input file.
+ * @param options.convert_to - The format to convert the file to.
+ *
+ * @returns The path to the output file.
+ */
+export function convertTo(options: {
+  input_file: string
+  convert_to: string
+}): Promise<string> {
   const { dir, output_file } = extractFileDetails(
     options.input_file,
     options.convert_to,
