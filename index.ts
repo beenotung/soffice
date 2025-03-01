@@ -11,18 +11,24 @@ export function is_soffice_installed() {
   }
 }
 
-function extractFileDetails(input_file: string) {
-  let ext = extname(input_file)
-  let output_file = input_file.slice(0, input_file.length - ext.length) + '.pdf'
+function extractFileDetails(input_file: string, convert_to: string) {
+  let input_ext = extname(input_file)
+  let output_ext = '.' + convert_to.split(':')[0]
+  let output_file =
+    input_file.slice(0, input_file.length - input_ext.length) + output_ext
   let dir = dirname(input_file)
-  return { ext, output_file, dir }
+  return { output_file, dir }
 }
 
 export function convertTo(options: { input_file: string; convert_to: string }) {
-  const { dir, output_file } = extractFileDetails(options.input_file)
+  const { dir, output_file } = extractFileDetails(
+    options.input_file,
+    options.convert_to,
+  )
   return new Promise((resolve, reject) => {
     let child = spawn('soffice', [
       '--headless',
+      '--writer',
       '--convert-to',
       options.convert_to,
       options.input_file,
@@ -56,7 +62,7 @@ export function convertTo(options: { input_file: string; convert_to: string }) {
 export function convertToPdf(input_file: string) {
   return convertTo({
     input_file,
-    convert_to: 'pdf:writer_pdf_Export',
+    convert_to: 'pdf',
   })
 }
 
