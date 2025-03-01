@@ -59,7 +59,7 @@ export function convertTo(options: { input_file: string; convert_to: string }) {
   })
 }
 
-export function convertToPdf(input_file: string) {
+export function convertToPDF(input_file: string) {
   return convertTo({
     input_file,
     convert_to: 'pdf',
