@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { convert_to_pdf, is_soffice_installed } from './index'
+import { convertToPdf, is_soffice_installed } from './index'
 import { existsSync, unlinkSync, writeFileSync } from 'fs'
 
 describe('check if soffice is installed', () => {
@@ -13,14 +13,15 @@ describe('pdf conversion', () => {
     let res = await fetch('https://www.example.com')
     let text = await res.text()
     writeFileSync('res/test.html', text)
+
+    if (existsSync('res/test.pdf')) {
+      unlinkSync('res/test.pdf')
+    }
   })
-  it('should convert html to pdf', () => {
+  it('should convert html to pdf', async () => {
     let input_file = 'res/test.html'
     let output_file = 'res/test.pdf'
-    if (existsSync(output_file)) {
-      unlinkSync(output_file)
-    }
-    expect(convert_to_pdf(input_file)).to.equals(output_file)
+    expect(await convertToPdf(input_file)).to.equal(output_file)
     expect(existsSync(output_file)).to.be.true
   })
 })
